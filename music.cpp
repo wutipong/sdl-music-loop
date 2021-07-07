@@ -22,6 +22,9 @@ void Music::FillBuffer(QueueBuffer &buffer) {
     } else {
       source.FillBuffer(buffer, current, dist, bufferIndex);
       current += dist;
+      if (current >= loopEnd) {
+        current = loopStart;
+      }
       bufferIndex += dist;
     }
   }

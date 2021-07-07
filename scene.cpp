@@ -27,6 +27,13 @@ void Scene::DoUI() {
     fileBrowser.Open();
   }
 
+  ImGui::InputScalar("Loop Start", ImGuiDataType_U64, &music.loopStart);
+  ImGui::InputScalar("Loop End", ImGuiDataType_U64, &music.loopEnd);
+
+  if (music.loopStart > music.loopEnd) {
+    music.loopStart = 0;
+  }
+
   if (isPlaying) {
     if (ImGui::Button("Pause")) {
       Pause();
