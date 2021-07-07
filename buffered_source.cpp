@@ -27,8 +27,8 @@ BufferedSource BufferedSource::OpenWAV(const std::string &path) {
   return output;
 }
 
-void BufferedSource::FillBuffer(QueueBuffer &buffer, const size_t &position,
-                                const size_t &count, const size_t &dest) {
+void BufferedSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
+                                const uint64_t &count, const uint64_t &dest) {
   if (frames.empty())
     return;
 

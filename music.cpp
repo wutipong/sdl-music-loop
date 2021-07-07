@@ -7,25 +7,25 @@ Music::Music(BufferedSource &&source) : source(source) {
 }
 
 void Music::FillBuffer(QueueBuffer &buffer) {
-  if (source.FrameCount() == 0)
+  if (current >= source.FrameCount())
     return;
 
-  for (auto bufferIndex = 0; bufferIndex < buffer.size();) {
+  for (size_t bufferIndex = 0; bufferIndex < buffer.size();) {
 
-    auto dist = loopEnd - current;
-    auto queueDistance = buffer.size() - bufferIndex;
+    auto sourceAvailable = loopEnd - current;
+    auto bufferRemain = buffer.size() - bufferIndex;
 
-    if (dist > queueDistance) {
-      source.FillBuffer(buffer, current, queueDistance, bufferIndex);
-      current += queueDistance;
+    if (sourceAvailable > bufferRemain) {
+      source.FillBuffer(buffer, current, bufferRemain, bufferIndex);
+      current += bufferRemain;
       return;
-    } else {
-      source.FillBuffer(buffer, current, dist, bufferIndex);
-      current += dist;
-      if (current >= loopEnd) {
-        current = loopStart;
-      }
-      bufferIndex += dist;
     }
+
+    source.FillBuffer(buffer, current, sourceAvailable, bufferIndex);
+    current += sourceAvailable;
+    if (current >= loopEnd) {
+      current = loopStart;
+    }
+    bufferIndex += sourceAvailable;
   }
 }

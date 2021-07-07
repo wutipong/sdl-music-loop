@@ -27,15 +27,15 @@ void Scene::DoUI() {
     fileBrowser.Open();
   }
 
-  int64_t loopStart = music.loopStart;
-  int64_t loopEnd = music.loopEnd;
+  uint64_t loopStart = music.loopStart;
+  uint64_t loopEnd = music.loopEnd;
   if (ImGui::InputScalar("Loop Start", ImGuiDataType_U64, &loopStart)) {
-    if (loopStart < loopEnd) {
+    if (loopStart < loopEnd && loopStart >= 0) {
       music.loopStart = loopStart;
     }
   }
   if (ImGui::InputScalar("Loop End", ImGuiDataType_U64, &loopEnd)) {
-    if (loopStart < loopEnd) {
+    if (loopEnd > loopStart && loopEnd <= music.Duration()) {
       music.loopEnd = loopEnd;
     }
   }

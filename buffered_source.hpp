@@ -10,10 +10,10 @@ class BufferedSource {
 public:
   static BufferedSource OpenWAV(const std::string &path);
 
-  void FillBuffer(QueueBuffer &buffer, const size_t &position,
-                  const size_t &count, const size_t &dest);
+  void FillBuffer(QueueBuffer &buffer, const uint64_t &position,
+                  const uint64_t &count, const uint64_t &dest);
 
-  int FrameCount() const { return frames.size(); }
+  uint64_t FrameCount() const { return frames.size(); }
 
 private:
   std::vector<Frame> frames;
