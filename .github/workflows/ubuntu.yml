@@ -1,0 +1,32 @@
+name: ubuntu-build
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - run: "export"
+
+      - run: "sudo apt install -y build-essential cmake curl zip unzip tar libgl-dev"
+
+      - name: Create output dir
+        run: mkdir out
+        
+      - name: Configure the project.
+        run: cmake $GITHUB_WORKSPACE
+        working-directory: out
+
+      - name: Build the project.
+        run: cmake --build $GITHUB_WORKSPACE/out
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ubuntu
+          path: out
