@@ -16,7 +16,7 @@ void Scene::CleanUp() {}
 
 void Scene::DoFrame(SDL_Event &event) {
   if (IsAudioNeedToQueue()) {
-    QueueAudio(source);
+    QueueAudio(music);
   }
 }
 
@@ -24,7 +24,7 @@ void Scene::DoUI() {
   ImGui::Begin("Control");
   ImGui::BeginGroup();
   if (ImGui::Button("Open File")) {
-    fileBrowser.OpenWAV();
+    fileBrowser.Open();
   }
 
   if (isPlaying) {
@@ -43,7 +43,9 @@ void Scene::DoUI() {
     fileBrowser.ClearSelected();
 
     try {
-      source = BufferedSource::OpenWAV(currentPath.string());
+      auto source = BufferedSource::OpenWAV(currentPath.string());
+      music = Music(std::move(source));
+
       Pause();
       ClearAudio();
     } catch (std::exception &err) {

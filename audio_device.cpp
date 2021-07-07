@@ -1,5 +1,5 @@
 #include "audio_device.hpp"
-#include "buffered_source.hpp"
+#include "music.hpp"
 #include <array>
 #include <spdlog/spdlog.h>
 
@@ -49,9 +49,9 @@ bool IsAudioNeedToQueue() {
   return SDL_GetQueuedAudioSize(deviceId) < QueueBufferSize;
 }
 
-void QueueAudio(BufferedSource &src) {
+void QueueAudio(Music &m) {
   QueueBuffer buffer;
-  src.FillBuffer(buffer);
+  m.FillBuffer(buffer);
   SDL_QueueAudio(deviceId, buffer.data(), buffer.size() * BytesPerFrame);
 }
 

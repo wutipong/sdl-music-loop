@@ -27,29 +27,10 @@ BufferedSource BufferedSource::OpenWAV(const std::string &path) {
   return output;
 }
 
-void BufferedSource::FillBuffer(QueueBuffer &queueBuffer) {
+void BufferedSource::FillBuffer(QueueBuffer &buffer, const size_t &position,
+                                const size_t &count, const size_t &dest) {
   if (frames.empty())
     return;
 
-  if (!valid) {
-    iter = frames.begin();
-    valid = true;
-  }
-
-  for (auto queue_iter = queueBuffer.begin();
-       queue_iter != queueBuffer.end();) {
-
-    auto dist = frames.end() - iter;
-    auto queueDistance = queueBuffer.end() - queue_iter;
-
-    if (dist > queueDistance) {
-      std::copy_n(iter, queueDistance, queue_iter);
-      iter += queueDistance;
-      return;
-    } else {
-      std::copy_n(iter, dist, queue_iter);
-      iter += dist;
-      queue_iter += dist;
-    }
-  }
+  std::copy_n(frames.begin() + position, count, buffer.begin() + dest);
 }

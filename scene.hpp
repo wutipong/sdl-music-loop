@@ -8,6 +8,7 @@
 
 #include "buffered_source.hpp"
 #include "imgui-filebrowser/imfilebrowser.h"
+#include "music.hpp"
 
 class Scene {
 public:
@@ -22,7 +23,7 @@ private:
   std::filesystem::path currentPath;
   std::string errorMessage;
 
-  BufferedSource source;
+  Music music;
 
   void Play();
   void Pause();

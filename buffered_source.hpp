@@ -10,7 +10,8 @@ class BufferedSource {
 public:
   static BufferedSource OpenWAV(const std::string &path);
 
-  void FillBuffer(QueueBuffer &buffer);
+  void FillBuffer(QueueBuffer &buffer, const size_t &position,
+                  const size_t &count, const size_t &dest);
 
   int FrameCount() const { return frames.size(); }
 
