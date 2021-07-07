@@ -1,22 +1,29 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <glm/glm.hpp>
+
 #include <GL/gl3w.h>
+#include <SDL2/SDL.h>
+#include <filesystem>
+#include <glm/glm.hpp>
+#include <imgui.h>
+
+#include "imgui-filebrowser/imfilebrowser.h"
+#include "wave_source.hpp"
 
 class Scene {
 public:
   void Init();
   void CleanUp();
-  void DoFrame(SDL_Event& event);
+  void DoFrame(SDL_Event &event);
   void DoUI();
 
 private:
-	glm::vec4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
+  ImGui::FileBrowser fileBrowser{};
+  bool isPlaying{false};
+  std::filesystem::path currentPath;
+  std::string errorMessage;
 
-	GLuint program;
-	GLuint vertShader;
-	GLuint fragShader;
+  WaveSource source;
 
-	GLuint vao;
-	GLuint vbo;
+  void Play();
+  void Pause();
 };

@@ -7,10 +7,10 @@
 #include "imgui_impl/imgui_impl_opengl3.h"
 #include "imgui_impl/imgui_impl_sdl.h"
 
-#include "shader.hpp"
+#include "audio_device.hpp"
 #include "scene.hpp"
 
-constexpr auto ProjectName = "sdl-gl-project-template";
+constexpr auto ProjectName = "sdl-music-loop";
 constexpr int WindowWidth = 800;
 constexpr int WindowHeight = 600;
 
@@ -25,7 +25,7 @@ void PrintDeviceInformation();
 int main(int argc, char **argv) {
   SDL_Init(SDL_INIT_EVERYTHING);
   spdlog::set_level(spdlog::level::debug);
-  
+
   spdlog::info("{} - starts.", ProjectName);
 
   SDL_GL_SetAttribute(
@@ -68,6 +68,9 @@ int main(int argc, char **argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, glCtx);
   ImGui_ImplOpenGL3_Init(GlslVersion);
 
+  OpenAudioDevice();
+  PrintAudioDeviceInfo();
+
   Scene scene;
   scene.Init();
 
@@ -109,6 +112,8 @@ int main(int argc, char **argv) {
   }
 
   scene.CleanUp();
+
+  CloseAudioDevice();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();
