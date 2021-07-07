@@ -43,8 +43,7 @@ void Scene::DoUI() {
     fileBrowser.ClearSelected();
 
     try {
-      auto src = WaveSource::Open(currentPath.string());
-      source = src;
+      source = WaveSource::Open(currentPath.string());
       Pause();
       ClearAudio();
     } catch (std::exception &err) {

@@ -17,32 +17,39 @@ WaveSource WaveSource::Open(const std::string &path) {
     throw std::invalid_argument("unsupported audio file.");
   }
 
-  output.buffer =
-      std::shared_ptr<Uint8>(buffer, [](auto p) { SDL_FreeWAV(p); });
-  output.length = length;
-  output.spec = spec;
+  auto src = reinterpret_cast<Frame *>(buffer);
+  auto frameCount = length / BytesPerFrame;
+
+  output.frames = std::vector<Frame>(src, src + frameCount);
+
+  SDL_FreeWAV(buffer);
 
   return output;
 }
 
 void WaveSource::FillBuffer(QueueBuffer &queueBuffer) {
-  if (length == 0)
+  if (frames.empty())
     return;
-  for (int cursor = 0; cursor < queueBuffer.size();) {
-    auto targetAmount = queueBuffer.size() - cursor;
-    auto available =
-        length - position > targetAmount ? targetAmount : length - position;
 
-    auto copyAmount = queueBuffer.size() - cursor > available
-                          ? available
-                          : queueBuffer.size() - cursor;
+  if (!valid) {
+    iter = frames.begin();
+    valid = true;
+  }
 
-    std::copy(buffer.get() + position, buffer.get() + position + copyAmount,
-              queueBuffer.data() + cursor);
-    position += copyAmount;
-    if (position >= length) {
-      position = 0;
+  for (auto queue_iter = queueBuffer.begin();
+       queue_iter != queueBuffer.end();) {
+
+    auto dist = frames.end() - iter;
+    auto queueDistance = queueBuffer.end() - queue_iter;
+
+    if (dist > queueDistance) {
+      std::copy_n(iter, queueDistance, queue_iter);
+      iter += queueDistance;
+      return;
+    } else {
+      std::copy_n(iter, dist, queue_iter);
+      iter += dist;
+      queue_iter += dist;
     }
-    cursor += copyAmount;
   }
 }

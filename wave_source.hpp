@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "pcm_source.hpp"
 
@@ -11,10 +12,10 @@ public:
 
   void FillBuffer(QueueBuffer &buffer);
 
-private:
-  std::shared_ptr<Uint8> buffer;
-  SDL_AudioSpec spec;
-  Uint32 length{0};
+  int FrameCount() const { return frames.size(); }
 
-  size_t position{0};
+private:
+  std::vector<Frame> frames;
+  std::vector<Frame>::iterator iter;
+  bool valid{false};
 };

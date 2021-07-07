@@ -52,7 +52,7 @@ bool IsAudioNeedToQueue() {
 void QueueAudio(WaveSource &src) {
   QueueBuffer buffer;
   src.FillBuffer(buffer);
-  SDL_QueueAudio(deviceId, buffer.data(), buffer.size());
+  SDL_QueueAudio(deviceId, buffer.data(), buffer.size() * BytesPerFrame);
 }
 
 void PlayAudio() { SDL_PauseAudioDevice(deviceId, 0); }

@@ -4,15 +4,15 @@
 
 class WaveSource;
 
+typedef Uint32 Frame;
 constexpr int SamplingRate = 44'100;
 constexpr int Channels = 2;
 constexpr SDL_AudioFormat Format = AUDIO_S16;
 constexpr int BufferFrameCount = 1024;
+constexpr size_t BytesPerFrame = sizeof(Frame);
+constexpr size_t QueueBufferSize = BufferFrameCount * BytesPerFrame;
 
-constexpr size_t QueueBufferSize =
-    BufferFrameCount * Channels * (SDL_AUDIO_BITSIZE(Format) / 8);
-
-typedef std::array<Uint8, QueueBufferSize> QueueBuffer;
+typedef std::array<Frame, BufferFrameCount> QueueBuffer;
 
 void OpenAudioDevice();
 void CloseAudioDevice();
