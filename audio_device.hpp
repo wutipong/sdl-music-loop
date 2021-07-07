@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <array>
 
-class WaveSource;
+class BufferedSource;
 
 typedef Uint32 Frame;
 constexpr int SamplingRate = 44'100;
@@ -21,7 +21,7 @@ void PrintAudioDeviceInfo();
 bool ValidateAudioSpec(const SDL_AudioSpec &spec);
 
 bool IsAudioNeedToQueue();
-void QueueAudio(WaveSource &src);
+void QueueAudio(BufferedSource &src);
 
 void PlayAudio();
 void PauseAudio();

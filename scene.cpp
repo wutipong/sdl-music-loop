@@ -24,7 +24,7 @@ void Scene::DoUI() {
   ImGui::Begin("Control");
   ImGui::BeginGroup();
   if (ImGui::Button("Open File")) {
-    fileBrowser.Open();
+    fileBrowser.OpenWAV();
   }
 
   if (isPlaying) {
@@ -43,7 +43,7 @@ void Scene::DoUI() {
     fileBrowser.ClearSelected();
 
     try {
-      source = WaveSource::Open(currentPath.string());
+      source = BufferedSource::OpenWAV(currentPath.string());
       Pause();
       ClearAudio();
     } catch (std::exception &err) {

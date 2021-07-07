@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 
+#include "buffered_source.hpp"
 #include "imgui-filebrowser/imfilebrowser.h"
-#include "wave_source.hpp"
 
 class Scene {
 public:
@@ -22,7 +22,7 @@ private:
   std::filesystem::path currentPath;
   std::string errorMessage;
 
-  WaveSource source;
+  BufferedSource source;
 
   void Play();
   void Pause();

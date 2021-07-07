@@ -1,8 +1,8 @@
-#include "wave_source.hpp"
+#include "buffered_source.hpp"
 #include <stdexcept>
 
-WaveSource WaveSource::Open(const std::string &path) {
-  WaveSource output{};
+BufferedSource BufferedSource::OpenWAV(const std::string &path) {
+  BufferedSource output{};
   Uint8 *buffer;
   SDL_AudioSpec spec;
   Uint32 length;
@@ -27,7 +27,7 @@ WaveSource WaveSource::Open(const std::string &path) {
   return output;
 }
 
-void WaveSource::FillBuffer(QueueBuffer &queueBuffer) {
+void BufferedSource::FillBuffer(QueueBuffer &queueBuffer) {
   if (frames.empty())
     return;
 

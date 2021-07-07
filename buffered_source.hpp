@@ -6,9 +6,9 @@
 
 #include "pcm_source.hpp"
 
-class WaveSource {
+class BufferedSource {
 public:
-  static WaveSource Open(const std::string &path);
+  static BufferedSource OpenWAV(const std::string &path);
 
   void FillBuffer(QueueBuffer &buffer);
 

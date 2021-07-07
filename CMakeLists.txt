@@ -8,14 +8,16 @@ project(sdl-music-loop)
 
 # add the executable
 add_executable(sdl-music-loop 
-	"main.cpp" 
+	"main.cpp" "io_util.hpp"
 	"imgui_impl/imgui_impl_sdl.h" 
 	"imgui_impl/imgui_impl_sdl.cpp"
 	"imgui_impl/imgui_impl_opengl3.h" 
 	"imgui_impl/imgui_impl_opengl3.cpp" 
 	"imgui-filebrowser/imfilebrowser.h"
 	"scene.hpp" "scene.cpp" 
-	"io_util.hpp" "wave_source.hpp" "wave_source.cpp" "pcm_source.hpp" "audio_device.hpp" "audio_device.cpp")
+	"buffered_source.hpp" "buffered_source.cpp" 
+	"pcm_source.hpp" 
+	"audio_device.hpp" "audio_device.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
