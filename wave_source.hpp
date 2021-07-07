@@ -9,8 +9,12 @@ class WaveSource {
 public:
   static WaveSource Open(const std::string &path);
 
+  void FillBuffer(QueueBuffer &buffer);
+
 private:
-  std::shared_ptr<Uint8> wav_buffer;
-  SDL_AudioSpec wav_spec;
-  Uint32 wav_length;
+  std::shared_ptr<Uint8> buffer;
+  SDL_AudioSpec spec;
+  Uint32 length{0};
+
+  size_t position{0};
 };

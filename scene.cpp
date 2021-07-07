@@ -14,7 +14,11 @@ void Scene::Init() {
 
 void Scene::CleanUp() {}
 
-void Scene::DoFrame(SDL_Event &event) {}
+void Scene::DoFrame(SDL_Event &event) {
+  if (IsAudioNeedToQueue()) {
+    QueueAudio(source);
+  }
+}
 
 void Scene::DoUI() {
   ImGui::Begin("Control");
@@ -34,13 +38,15 @@ void Scene::DoUI() {
   }
   fileBrowser.Display();
   if (fileBrowser.HasSelected()) {
-    Pause();
+
     currentPath = fileBrowser.GetSelected();
     fileBrowser.ClearSelected();
 
     try {
       auto src = WaveSource::Open(currentPath.string());
       source = src;
+      Pause();
+      ClearAudio();
     } catch (std::exception &err) {
       errorMessage = err.what();
       ImGui::OpenPopup("Error");
@@ -63,6 +69,12 @@ void Scene::DoUI() {
   ImGui::End();
 }
 
-void Scene::Play() { isPlaying = true; }
+void Scene::Play() {
+  isPlaying = true;
+  PlayAudio();
+}
 
-void Scene::Pause() { isPlaying = false; }
+void Scene::Pause() {
+  isPlaying = false;
+  PauseAudio();
+}

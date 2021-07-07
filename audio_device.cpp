@@ -1,4 +1,6 @@
 #include "audio_device.hpp"
+#include "wave_source.hpp"
+#include <array>
 #include <spdlog/spdlog.h>
 
 namespace {
@@ -11,7 +13,7 @@ void OpenAudioDevice() {
   desiredSpec.freq = SamplingRate;
   desiredSpec.format = Format;
   desiredSpec.channels = Channels;
-  desiredSpec.samples = BufferSize;
+  desiredSpec.samples = BufferFrameCount;
   desiredSpec.callback = nullptr;
 
   deviceId = SDL_OpenAudioDevice(nullptr, 0, &desiredSpec, &audioSpec, 0);
@@ -42,3 +44,17 @@ bool ValidateAudioSpec(const SDL_AudioSpec &spec) {
 
   return true;
 }
+
+bool IsAudioNeedToQueue() {
+  return SDL_GetQueuedAudioSize(deviceId) < QueueBufferSize;
+}
+
+void QueueAudio(WaveSource &src) {
+  QueueBuffer buffer;
+  src.FillBuffer(buffer);
+  SDL_QueueAudio(deviceId, buffer.data(), buffer.size());
+}
+
+void PlayAudio() { SDL_PauseAudioDevice(deviceId, 0); }
+void PauseAudio() { SDL_PauseAudioDevice(deviceId, 1); }
+void ClearAudio() { SDL_ClearQueuedAudio(deviceId); }
