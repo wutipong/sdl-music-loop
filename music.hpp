@@ -1,11 +1,12 @@
 #pragma once
 #include "audio_device.hpp"
-#include "buffered_source.hpp"
+#include "pcm_source.hpp"
+#include <memory>
 
 class Music {
 public:
   Music(){};
-  Music(BufferedSource &&source);
+  Music(std::unique_ptr<PCMSource> &&s);
 
   void FillBuffer(QueueBuffer &buffer);
 
@@ -13,8 +14,8 @@ public:
   uint64_t loopEnd{0};
   uint64_t current{0};
 
-  uint64_t Duration() { return source.FrameCount(); }
+  uint64_t Duration() { return source->FrameCount(); }
 
 private:
-  BufferedSource source;
+  std::unique_ptr<PCMSource> source;
 };

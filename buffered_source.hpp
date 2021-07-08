@@ -5,15 +5,16 @@
 #include <vector>
 
 #include "pcm_source.hpp"
+#include <memory>
 
-class BufferedSource {
+class BufferedSource : public PCMSource {
 public:
-  static BufferedSource OpenWAV(const std::string &path);
+  static std::unique_ptr<PCMSource> OpenWAV(const std::string &path);
 
-  void FillBuffer(QueueBuffer &buffer, const uint64_t &position,
-                  const uint64_t &count, const uint64_t &dest);
+  virtual void FillBuffer(QueueBuffer &buffer, const uint64_t &position,
+                          const uint64_t &count, const uint64_t &dest) override;
 
-  uint64_t FrameCount() const { return frames.size(); }
+  virtual uint64_t FrameCount() const override { return frames.size(); }
 
 private:
   std::vector<Frame> frames;

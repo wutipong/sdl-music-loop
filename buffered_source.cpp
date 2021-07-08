@@ -1,8 +1,8 @@
 #include "buffered_source.hpp"
 #include <stdexcept>
 
-BufferedSource BufferedSource::OpenWAV(const std::string &path) {
-  BufferedSource output{};
+std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
+  auto output = new BufferedSource;
   Uint8 *buffer;
   SDL_AudioSpec spec;
   Uint32 length;
@@ -20,11 +20,11 @@ BufferedSource BufferedSource::OpenWAV(const std::string &path) {
   auto src = reinterpret_cast<Frame *>(buffer);
   auto frameCount = length / BytesPerFrame;
 
-  output.frames = std::vector<Frame>(src, src + frameCount);
+  output->frames = std::vector<Frame>(src, src + frameCount);
 
   SDL_FreeWAV(buffer);
 
-  return output;
+  return std::unique_ptr<PCMSource>(output);
 }
 
 void BufferedSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
