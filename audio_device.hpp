@@ -4,7 +4,7 @@
 
 class Music;
 
-typedef Uint32 Frame;
+typedef int32_t Frame;
 constexpr int SamplingRate = 44'100;
 constexpr int Channels = 2;
 constexpr SDL_AudioFormat Format = AUDIO_S16;
@@ -19,6 +19,7 @@ void CloseAudioDevice();
 void PrintAudioDeviceInfo();
 
 bool ValidateAudioSpec(const SDL_AudioSpec &spec);
+bool ValidateAudioSpec(const int &channels, const int &freq);
 
 bool IsAudioNeedToQueue();
 void QueueAudio(Music &src);

@@ -5,11 +5,13 @@
 #include <magic_enum.hpp>
 #include <vector>
 
+#include "buffered_source.hpp"
 #include "io_util.hpp"
+#include "wavpack_source.hpp"
 
 void Scene::Init() {
   fileBrowser.SetTitle("Open file");
-  fileBrowser.SetTypeFilters({".wav"});
+  fileBrowser.SetTypeFilters({".wav", ".wv"});
 }
 
 void Scene::CleanUp() {}
@@ -56,8 +58,7 @@ void Scene::DoUI() {
     fileBrowser.ClearSelected();
 
     try {
-      auto source = BufferedSource::OpenWAV(currentPath.string());
-      music = Music(std::move(source));
+      OpenMusic(currentPath);
 
       Pause();
       ClearAudio();
@@ -81,6 +82,19 @@ void Scene::DoUI() {
   }
 
   ImGui::End();
+}
+
+void Scene::OpenMusic(const std::filesystem::path &path) {
+
+  std::unique_ptr<PCMSource> source;
+  auto ext = path.extension().string();
+  if (ext == ".wav") {
+    source = BufferedSource::OpenWAV(path.string());
+  } else if (ext == ".wv") {
+    source = WavpackSource::OpenWV(path.string());
+  }
+
+  music = Music(std::move(source));
 }
 
 void Scene::Play() {

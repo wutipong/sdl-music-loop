@@ -7,7 +7,7 @@ Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
 }
 
 void Music::FillBuffer(QueueBuffer &buffer) {
-  if (current >= source->FrameCount())
+  if (source == nullptr || current >= source->FrameCount())
     return;
 
   for (size_t bufferIndex = 0; bufferIndex < buffer.size();) {

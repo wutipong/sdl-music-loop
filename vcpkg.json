@@ -9,6 +9,7 @@
     "glm",
     "spdlog",
     "fmt",
-    "magic-enum"
+    "magic-enum",
+    "wavpack"
   ]
 }

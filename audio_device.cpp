@@ -45,6 +45,15 @@ bool ValidateAudioSpec(const SDL_AudioSpec &spec) {
   return true;
 }
 
+bool ValidateAudioSpec(const int &channels, const int &freq) {
+  if (freq != SamplingRate)
+    return false;
+  if (channels != Channels)
+    return false;
+
+  return true;
+}
+
 bool IsAudioNeedToQueue() {
   return SDL_GetQueuedAudioSize(deviceId) < QueueBufferSize;
 }

@@ -6,7 +6,6 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 
-#include "buffered_source.hpp"
 #include "imgui-filebrowser/imfilebrowser.h"
 #include "music.hpp"
 
@@ -27,4 +26,5 @@ private:
 
   void Play();
   void Pause();
+  void OpenMusic(const std::filesystem::path &path);
 };
