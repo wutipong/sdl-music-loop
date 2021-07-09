@@ -25,8 +25,8 @@ std::unique_ptr<PCMSource> WavpackSource::OpenWV(std::string &path) {
   return std::unique_ptr<PCMSource>(output);
 }
 
-void WavpackSource::FillBuffer(SampleBuffer &buffer, const uint64_t &position,
-                               const uint64_t &count, const uint64_t &dest) {
+void WavpackSource::FillBuffer( const uint64_t &position, const uint64_t &count,
+                               SampleBuffer &buffer, const uint64_t &dest) {
   WavpackSeekSample64(context, position);
 
   std::vector<int32_t> wvBuffer;

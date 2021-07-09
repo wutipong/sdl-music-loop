@@ -16,12 +16,12 @@ void Music::FillBuffer(SampleBuffer &buffer) {
     auto bufferRemain = buffer.FrameDataSize() - bufferIndex;
 
     if (sourceAvailable > bufferRemain) {
-      source->FillBuffer(buffer, current, bufferRemain, bufferIndex);
+      source->FillBuffer(current, bufferRemain, buffer, bufferIndex);
       current += bufferRemain;
       return;
     }
 
-    source->FillBuffer(buffer, current, sourceAvailable, bufferIndex);
+    source->FillBuffer(current, sourceAvailable, buffer, bufferIndex);
     current += sourceAvailable;
     if (current >= loopEnd) {
       current = loopStart;

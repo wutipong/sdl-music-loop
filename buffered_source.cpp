@@ -27,8 +27,8 @@ std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
   return std::unique_ptr<PCMSource>(output);
 }
 
-void BufferedSource::FillBuffer(SampleBuffer &buffer, const uint64_t &position,
-                                const uint64_t &count, const uint64_t &dest) {
+void BufferedSource::FillBuffer(const uint64_t &position, const uint64_t &count,
+                                SampleBuffer &buffer, const uint64_t &dest) {
   if (frames.empty())
     return;
 
