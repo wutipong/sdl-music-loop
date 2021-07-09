@@ -1,8 +1,6 @@
 #pragma once
 
-#include <GL/gl3w.h>
 #include <SDL2/SDL.h>
-#include <glm/glm.hpp>
 #include <imgui.h>
 
 #include "scene.hpp"

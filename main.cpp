@@ -60,8 +60,6 @@ int main(int argc, char **argv) {
 
   gl3wInit();
 
-  PrintDeviceInformation();
-
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO &io = ImGui::GetIO();

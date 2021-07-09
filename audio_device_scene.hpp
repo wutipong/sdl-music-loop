@@ -1,9 +1,7 @@
 #pragma once
 
-#include <GL/gl3w.h>
 #include <SDL2/SDL.h>
 #include <filesystem>
-#include <glm/glm.hpp>
 #include <imgui.h>
 
 #include "imgui-filebrowser/imfilebrowser.h"
