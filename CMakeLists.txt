@@ -21,9 +21,10 @@ add_executable(sdl-music-loop
 	"music.hpp" "music.cpp" 
 	"wavpack_source.hpp" "wavpack_source.cpp" 
 	"sample_buffer.hpp" "sample_buffer.cpp" 
-	"ogg_source.hpp" "ogg_source.cpp")
+	"ogg_source.hpp" "ogg_source.cpp" "mixer_scene.hpp" "mixer_scene.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
+find_package(sdl2-mixer CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(gl3w CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -35,6 +36,7 @@ find_package(Vorbis CONFIG REQUIRED)
 target_link_libraries(sdl-music-loop PRIVATE 
     SDL2::SDL2 
     SDL2::SDL2main 
+	SDL2::SDL2_mixer
     imgui::imgui 
     unofficial::gl3w::gl3w 
     spdlog::spdlog 

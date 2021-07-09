@@ -9,7 +9,7 @@
 #include "imgui-filebrowser/imfilebrowser.h"
 #include "music.hpp"
 
-class Scene {
+class MixerScene {
 public:
   void Init();
   void CleanUp();
@@ -26,4 +26,6 @@ private:
 
   void Play();
   void Pause();
+
+  void FillBuffer(SampleBuffer &buffer);
 };

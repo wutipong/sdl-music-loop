@@ -9,6 +9,7 @@
 
 #include "audio_device.hpp"
 #include "scene.hpp"
+#include "mixer_scene.hpp"
 
 constexpr auto ProjectName = "sdl-music-loop";
 constexpr int WindowWidth = 800;
@@ -68,10 +69,7 @@ int main(int argc, char **argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, glCtx);
   ImGui_ImplOpenGL3_Init(GlslVersion);
 
-  OpenAudioDevice();
-  PrintAudioDeviceInfo();
-
-  Scene scene;
+  MixerScene scene;
   scene.Init();
 
   while (true) {
@@ -112,8 +110,6 @@ int main(int argc, char **argv) {
   }
 
   scene.CleanUp();
-
-  CloseAudioDevice();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();

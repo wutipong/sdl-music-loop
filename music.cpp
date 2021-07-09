@@ -1,4 +1,7 @@
 #include "music.hpp"
+#include "buffered_source.hpp"
+#include "wavpack_source.hpp"
+#include "ogg_source.hpp"
 
 Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
   loopStart = 0;
@@ -7,11 +10,12 @@ Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
 }
 
 void Music::FillBuffer(SampleBuffer &buffer) {
-  if (source == nullptr || current >= source->FrameCount())
+  if (source == nullptr || current >= source->FrameCount()) {
+    std::fill_n(buffer.FrameData(), buffer.FrameDataSize(), 0);
     return;
+  }
 
   for (size_t bufferIndex = 0; bufferIndex < buffer.FrameDataSize();) {
-
     auto sourceAvailable = loopEnd - current;
     auto bufferRemain = buffer.FrameDataSize() - bufferIndex;
 
@@ -28,4 +32,18 @@ void Music::FillBuffer(SampleBuffer &buffer) {
     }
     bufferIndex += sourceAvailable;
   }
+}
+
+Music Music::Open(const std::filesystem::path &path) {
+  std::unique_ptr<PCMSource> source;
+  auto ext = path.extension().string();
+  if (ext == ".wav") {
+    source = BufferedSource::OpenWAV(path.string());
+  } else if (ext == ".wv") {
+    source = WavpackSource::OpenWV(path.string());
+  } else if (ext == ".ogg") {
+    source = OggSource::OpenOGG(path.string());
+  }
+
+  return Music(std::move(source));
 }
