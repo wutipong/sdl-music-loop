@@ -5,13 +5,15 @@
 #include <magic_enum.hpp>
 #include <vector>
 
-#include "buffered_source.hpp"
 #include "io_util.hpp"
+
+#include "buffered_source.hpp"
+#include "ogg_source.hpp"
 #include "wavpack_source.hpp"
 
 void Scene::Init() {
   fileBrowser.SetTitle("Open file");
-  fileBrowser.SetTypeFilters({".wav", ".wv"});
+  fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});
 }
 
 void Scene::CleanUp() {}
@@ -92,6 +94,8 @@ void Scene::OpenMusic(const std::filesystem::path &path) {
     source = BufferedSource::OpenWAV(path.string());
   } else if (ext == ".wv") {
     source = WavpackSource::OpenWV(path.string());
+  } else if (ext == ".ogg") {
+    source = OggSource::OpenOGG(path.string());
   }
 
   music = Music(std::move(source));

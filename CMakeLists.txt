@@ -17,7 +17,11 @@ add_executable(sdl-music-loop
 	"scene.hpp" "scene.cpp" 
 	"buffered_source.hpp" "buffered_source.cpp" 
 	"pcm_source.hpp" 
-	"audio_device.hpp" "audio_device.cpp" "music.hpp" "music.cpp" "wavpack_source.hpp" "wavpack_source.cpp" "sample_buffer.hpp" "sample_buffer.cpp")
+	"audio_device.hpp" "audio_device.cpp" 
+	"music.hpp" "music.cpp" 
+	"wavpack_source.hpp" "wavpack_source.cpp" 
+	"sample_buffer.hpp" "sample_buffer.cpp" 
+	"ogg_source.hpp" "ogg_source.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
@@ -26,6 +30,7 @@ find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(wavpack CONFIG REQUIRED)
+find_package(Vorbis CONFIG REQUIRED)
 
 target_link_libraries(sdl-music-loop PRIVATE 
     SDL2::SDL2 
@@ -35,6 +40,7 @@ target_link_libraries(sdl-music-loop PRIVATE
     spdlog::spdlog 
     spdlog::spdlog_header_only
     fmt::fmt
-	WavPack::wavpack)
+	WavPack::wavpack
+	Vorbis::vorbis Vorbis::vorbisenc Vorbis::vorbisfile)
 
 target_compile_features(sdl-music-loop PRIVATE cxx_std_17)

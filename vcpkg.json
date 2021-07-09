@@ -1,5 +1,5 @@
 {
-  "name": "sdl2-gl-project-template",
+  "name": "sdl-music-loop",
   "version-string": "0.1.0-dev",
   "dependencies": [
     "sdl2",
@@ -10,6 +10,7 @@
     "spdlog",
     "fmt",
     "magic-enum",
-    "wavpack"
+    "wavpack",
+    "libvorbis"
   ]
 }
