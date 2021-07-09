@@ -14,14 +14,14 @@ add_executable(sdl-music-loop
 	"imgui_impl/imgui_impl_opengl3.h" 
 	"imgui_impl/imgui_impl_opengl3.cpp" 
 	"imgui-filebrowser/imfilebrowser.h"
-	"scene.hpp" "scene.cpp" 
+	"scene.hpp" 
 	"buffered_source.hpp" "buffered_source.cpp" 
 	"pcm_source.hpp" 
 	"audio_device.hpp" "audio_device.cpp" 
 	"music.hpp" "music.cpp" 
 	"wavpack_source.hpp" "wavpack_source.cpp" 
 	"sample_buffer.hpp" "sample_buffer.cpp" 
-	"ogg_source.hpp" "ogg_source.cpp" "mixer_scene.hpp" "mixer_scene.cpp")
+	"ogg_source.hpp" "ogg_source.cpp" "mixer_scene.hpp" "mixer_scene.cpp" "menu_scene.hpp" "menu_scene.cpp" "audio_device_scene.cpp" "audio_device_scene.hpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)

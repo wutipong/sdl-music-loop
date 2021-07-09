@@ -115,3 +115,5 @@ void MixerScene::FillBuffer(SampleBuffer &buffer) {
     std::fill_n(buffer.FrameData(), buffer.FrameDataSize(), 0);
   }
 }
+
+std::unique_ptr<Scene> MixerScene::GetNextScene() { return nullptr; }

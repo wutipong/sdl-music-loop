@@ -8,8 +8,8 @@
 #include "imgui_impl/imgui_impl_sdl.h"
 
 #include "audio_device.hpp"
+#include "menu_scene.hpp"
 #include "scene.hpp"
-#include "mixer_scene.hpp"
 
 constexpr auto ProjectName = "sdl-music-loop";
 constexpr int WindowWidth = 800;
@@ -69,8 +69,8 @@ int main(int argc, char **argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, glCtx);
   ImGui_ImplOpenGL3_Init(GlslVersion);
 
-  MixerScene scene;
-  scene.Init();
+  std::unique_ptr<Scene> scene(new MenuScene());
+  scene->Init();
 
   while (true) {
     SDL_Event event;
@@ -80,12 +80,19 @@ int main(int argc, char **argv) {
         break;
     }
 
+    auto nextScene = scene->GetNextScene();
+    if (nextScene != nullptr) {
+      scene->CleanUp();
+      nextScene->Init();
+      scene = std::move(nextScene);
+    }
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(window);
     ImGui::NewFrame();
 
     // Begin Draw UI
-    scene.DoUI();
+    scene->DoUI();
     // End Draw UI
 
     ImGui::EndFrame();
@@ -100,7 +107,7 @@ int main(int argc, char **argv) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Begin Draw
-    scene.DoFrame(event);
+    scene->DoFrame(event);
     // End Draw
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -109,7 +116,7 @@ int main(int argc, char **argv) {
     SDL_Delay(1);
   }
 
-  scene.CleanUp();
+  scene->CleanUp();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();

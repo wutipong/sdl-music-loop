@@ -1,4 +1,4 @@
-#include "scene.hpp"
+#include "audio_device_scene.hpp"
 
 #include <array>
 #include <glm/gtc/type_ptr.hpp>
@@ -11,7 +11,7 @@
 #include "ogg_source.hpp"
 #include "wavpack_source.hpp"
 
-void Scene::Init() {
+void AudioDeviceScene::Init() {
   fileBrowser.SetTitle("Open file");
   fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});
 
@@ -19,15 +19,15 @@ void Scene::Init() {
   PrintAudioDeviceInfo();
 }
 
-void Scene::CleanUp() { CloseAudioDevice(); }
+void AudioDeviceScene::CleanUp() { CloseAudioDevice(); }
 
-void Scene::DoFrame(SDL_Event &event) {
+void AudioDeviceScene::DoFrame(SDL_Event &event) {
   if (IsAudioNeedToQueue()) {
     QueueAudio(music);
   }
 }
 
-void Scene::DoUI() {
+void AudioDeviceScene::DoUI() {
   ImGui::Begin("Control");
   ImGui::BeginGroup();
   if (ImGui::Button("Open File")) {
@@ -89,12 +89,12 @@ void Scene::DoUI() {
   ImGui::End();
 }
 
-void Scene::Play() {
+void AudioDeviceScene::Play() {
   isPlaying = true;
   PlayAudio();
 }
 
-void Scene::Pause() {
+void AudioDeviceScene::Pause() {
   isPlaying = false;
   PauseAudio();
 }

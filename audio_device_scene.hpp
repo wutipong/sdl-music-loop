@@ -10,13 +10,13 @@
 #include "music.hpp"
 #include "scene.hpp"
 
-class MixerScene : public Scene {
+class AudioDeviceScene : public Scene {
 public:
   virtual void Init() override;
   virtual void CleanUp() override;
   virtual void DoFrame(SDL_Event &event) override;
   virtual void DoUI() override;
-  virtual std::unique_ptr<Scene> GetNextScene() override;
+  virtual std::unique_ptr<Scene> GetNextScene() override { return nullptr; };
 
 private:
   ImGui::FileBrowser fileBrowser{};
@@ -28,6 +28,4 @@ private:
 
   void Play();
   void Pause();
-
-  void FillBuffer(SampleBuffer &buffer);
 };
