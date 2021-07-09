@@ -102,12 +102,10 @@ void MixerScene::DoUI() {
 
 void MixerScene::Play() {
   isPlaying = true;
-  Mix_ResumeMusic();
 }
 
 void MixerScene::Pause() {
   isPlaying = false;
-  Mix_PauseMusic();
 }
 
 void MixerScene::FillBuffer(SampleBuffer &buffer) {
