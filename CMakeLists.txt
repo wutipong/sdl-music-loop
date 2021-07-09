@@ -17,7 +17,7 @@ add_executable(sdl-music-loop
 	"scene.hpp" "scene.cpp" 
 	"buffered_source.hpp" "buffered_source.cpp" 
 	"pcm_source.hpp" 
-	"audio_device.hpp" "audio_device.cpp" "music.hpp" "music.cpp" "wavpack_source.hpp" "wavpack_source.cpp")
+	"audio_device.hpp" "audio_device.cpp" "music.hpp" "music.cpp" "wavpack_source.hpp" "wavpack_source.cpp" "sample_buffer.hpp" "sample_buffer.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)

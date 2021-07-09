@@ -18,7 +18,7 @@ std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
   }
 
   auto src = reinterpret_cast<Frame *>(buffer);
-  auto frameCount = length / BytesPerFrame;
+  auto frameCount = length / sizeof(Frame);
 
   output->frames = std::vector<Frame>(src, src + frameCount);
 
@@ -27,10 +27,10 @@ std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
   return std::unique_ptr<PCMSource>(output);
 }
 
-void BufferedSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
+void BufferedSource::FillBuffer(SampleBuffer &buffer, const uint64_t &position,
                                 const uint64_t &count, const uint64_t &dest) {
   if (frames.empty())
     return;
 
-  std::copy_n(frames.begin() + position, count, buffer.begin() + dest);
+  std::copy_n(frames.begin() + position, count, buffer.FrameData(dest));
 }

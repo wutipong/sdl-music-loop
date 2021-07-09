@@ -6,14 +6,14 @@ Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
   current = 0;
 }
 
-void Music::FillBuffer(QueueBuffer &buffer) {
+void Music::FillBuffer(SampleBuffer &buffer) {
   if (source == nullptr || current >= source->FrameCount())
     return;
 
-  for (size_t bufferIndex = 0; bufferIndex < buffer.size();) {
+  for (size_t bufferIndex = 0; bufferIndex < buffer.FrameDataSize();) {
 
     auto sourceAvailable = loopEnd - current;
-    auto bufferRemain = buffer.size() - bufferIndex;
+    auto bufferRemain = buffer.FrameDataSize() - bufferIndex;
 
     if (sourceAvailable > bufferRemain) {
       source->FillBuffer(buffer, current, bufferRemain, bufferIndex);

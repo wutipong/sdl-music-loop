@@ -25,7 +25,7 @@ std::unique_ptr<PCMSource> WavpackSource::OpenWV(std::string &path) {
   return std::unique_ptr<PCMSource>(output);
 }
 
-void WavpackSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
+void WavpackSource::FillBuffer(SampleBuffer &buffer, const uint64_t &position,
                                const uint64_t &count, const uint64_t &dest) {
   WavpackSeekSample64(context, position);
 
@@ -34,9 +34,7 @@ void WavpackSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
   WavpackUnpackSamples(context, wvBuffer.data(), count);
 
   // trim off the 16bit padding of each sample created by Wavpack.
-  // each frames are consisted of 2 16-bit samples, one for left and another for
-  // right channel.
-  int16_t *ptr = reinterpret_cast<int16_t *>(buffer.data() + dest);
+  int16_t *ptr = buffer.SampleData(dest);
   for (int i = 0; i < wvBuffer.size(); i++) {
     ptr[i] = wvBuffer[i];
   }

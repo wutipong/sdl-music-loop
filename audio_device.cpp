@@ -2,6 +2,7 @@
 #include "music.hpp"
 #include <array>
 #include <spdlog/spdlog.h>
+#include "sample_buffer.hpp"
 
 namespace {
 SDL_AudioDeviceID deviceId;
@@ -55,13 +56,15 @@ bool ValidateAudioSpec(const int &channels, const int &freq) {
 }
 
 bool IsAudioNeedToQueue() {
+  constexpr size_t QueueBufferSize = BufferFrameCount * sizeof(Frame);
+
   return SDL_GetQueuedAudioSize(deviceId) < QueueBufferSize;
 }
 
 void QueueAudio(Music &m) {
-  QueueBuffer buffer;
+  SampleBuffer buffer(BufferFrameCount);
   m.FillBuffer(buffer);
-  SDL_QueueAudio(deviceId, buffer.data(), buffer.size() * BytesPerFrame);
+  SDL_QueueAudio(deviceId, buffer.SampleData(), buffer.ByteSize());
 }
 
 void PlayAudio() { SDL_PauseAudioDevice(deviceId, 0); }
