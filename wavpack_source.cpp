@@ -1,5 +1,8 @@
 #include "wavpack_source.hpp"
+#include <SDL2/SDL.h>
+#include <limits>
 #include <stdexcept>
+#include <vector>
 
 std::unique_ptr<PCMSource> WavpackSource::OpenWV(std::string &path) {
   auto *output = new WavpackSource;
@@ -26,8 +29,17 @@ void WavpackSource::FillBuffer(QueueBuffer &buffer, const uint64_t &position,
                                const uint64_t &count, const uint64_t &dest) {
   WavpackSeekSample64(context, position);
 
-  // TODO: Wavpack Sample is always in 32 bit where we need 16-bit here.
-  WavpackUnpackSamples(context, buffer.data() + dest, count);
+  std::vector<int32_t> wvBuffer;
+  wvBuffer.resize(count * Channels);
+  WavpackUnpackSamples(context, wvBuffer.data(), count);
+
+  // trim off the 16bit padding of each sample created by Wavpack.
+  // each frames are consisted of 2 16-bit samples, one for left and another for
+  // right channel.
+  int16_t *ptr = reinterpret_cast<int16_t *>(buffer.data() + dest);
+  for (int i = 0; i < wvBuffer.size(); i++) {
+    ptr[i] = wvBuffer[i];
+  }
 }
 
 uint64_t WavpackSource::FrameCount() const {
