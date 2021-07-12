@@ -7,10 +7,6 @@
 
 #include "io_util.hpp"
 
-#include "buffered_source.hpp"
-#include "ogg_source.hpp"
-#include "wavpack_source.hpp"
-
 void AudioDeviceScene::Init() {
   fileBrowser.SetTitle("Open file");
   fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});

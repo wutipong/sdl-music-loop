@@ -1,7 +1,7 @@
 #include "music.hpp"
 #include "buffered_source.hpp"
+#include "vorbis_source.hpp"
 #include "wavpack_source.hpp"
-#include "ogg_source.hpp"
 
 Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
   loopStart = 0;
@@ -42,7 +42,7 @@ Music Music::Open(const std::filesystem::path &path) {
   } else if (ext == ".wv") {
     source = WavpackSource::OpenWV(path.string());
   } else if (ext == ".ogg") {
-    source = OggSource::OpenOGG(path.string());
+    source = VorbisSource::OpenOGG(path.string());
   }
 
   return Music(std::move(source));

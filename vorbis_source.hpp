@@ -7,7 +7,7 @@
 #include <string>
 #include <vorbis/vorbisfile.h>
 
-class OggSource : public PCMSource {
+class VorbisSource : public PCMSource {
 public:
   static std::unique_ptr<PCMSource> OpenOGG(const std::string &path);
   virtual void FillBuffer(const uint64_t &position, const uint64_t &count,
@@ -15,7 +15,7 @@ public:
 
   virtual uint64_t FrameCount() const override;
 
-  virtual ~OggSource();
+  virtual ~VorbisSource();
 
 private:
   OggVorbis_File file;

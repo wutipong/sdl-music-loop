@@ -8,10 +8,6 @@
 
 #include "io_util.hpp"
 
-#include "buffered_source.hpp"
-#include "ogg_source.hpp"
-#include "wavpack_source.hpp"
-
 void MixerScene::Init() {
   fileBrowser.SetTitle("Open file");
   fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});
@@ -100,13 +96,9 @@ void MixerScene::DoUI() {
   ImGui::End();
 }
 
-void MixerScene::Play() {
-  isPlaying = true;
-}
+void MixerScene::Play() { isPlaying = true; }
 
-void MixerScene::Pause() {
-  isPlaying = false;
-}
+void MixerScene::Pause() { isPlaying = false; }
 
 void MixerScene::FillBuffer(SampleBuffer &buffer) {
   if (isPlaying) {
