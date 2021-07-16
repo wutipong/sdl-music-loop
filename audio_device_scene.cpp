@@ -9,7 +9,7 @@
 
 void AudioDeviceScene::Init() {
   fileBrowser.SetTitle("Open file");
-  fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});
+  fileBrowser.SetTypeFilters(Music::SupportedFormats());
 
   OpenAudioDevice();
   PrintAudioDeviceInfo();

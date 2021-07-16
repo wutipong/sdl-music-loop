@@ -1,7 +1,9 @@
 #include "music.hpp"
 #include "buffered_source.hpp"
-#include "vorbis_source.hpp"
 #include "wavpack_source.hpp"
+#include "ogg_source.hpp"
+#include "flac_source.hpp"
+#include "mp3_source.hpp"
 
 Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
   loopStart = 0;
@@ -42,6 +44,11 @@ Music Music::Open(const std::filesystem::path &path) {
   } else if (ext == ".wv") {
     source = WavpackSource::OpenWV(path.string());
   } else if (ext == ".ogg") {
+    source = OggSource::OpenOGG(path.string());
+  } else if (ext == ".flac") {
+    source = FlacSource::OpenFLAC(path.string());
+  } else if (ext == ".mp3") {
+    source = Mp3Source::OpenMP3(path.string());
     source = VorbisSource::OpenOGG(path.string());
   }
 

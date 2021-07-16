@@ -10,7 +10,7 @@
 
 void MixerScene::Init() {
   fileBrowser.SetTitle("Open file");
-  fileBrowser.SetTypeFilters({".wav", ".wv", ".ogg"});
+  fileBrowser.SetTypeFilters(Music::SupportedFormats());
 
   Mix_Init(0);
   Mix_OpenAudio(SamplingRate, Format, Channels, BufferFrameCount);
