@@ -21,7 +21,11 @@ add_executable(sdl-music-loop
 	"music.hpp" "music.cpp" 
 	"wavpack_source.hpp" "wavpack_source.cpp" 
 	"sample_buffer.hpp" "sample_buffer.cpp" 
-	"ogg_source.hpp" "ogg_source.cpp" "mixer_scene.hpp" "mixer_scene.cpp" "menu_scene.hpp" "menu_scene.cpp" "audio_device_scene.cpp" "audio_device_scene.hpp")
+	"ogg_source.hpp" "ogg_source.cpp" 
+	"mixer_scene.hpp" "mixer_scene.cpp" 
+	"menu_scene.hpp" "menu_scene.cpp" 
+	"audio_device_scene.cpp" "audio_device_scene.hpp" 
+	"flac_source.hpp" "flac_source.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
@@ -32,6 +36,8 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(wavpack CONFIG REQUIRED)
 find_package(Vorbis CONFIG REQUIRED)
+
+find_path(DRLIBS_INCLUDE_DIRS "dr_flac.h")
 
 target_link_libraries(sdl-music-loop PRIVATE 
     SDL2::SDL2 
@@ -44,5 +50,7 @@ target_link_libraries(sdl-music-loop PRIVATE
     fmt::fmt
 	WavPack::wavpack
 	Vorbis::vorbis Vorbis::vorbisenc Vorbis::vorbisfile)
+
+target_include_directories(sdl-music-loop PRIVATE ${DRLIBS_INCLUDE_DIRS})
 
 target_compile_features(sdl-music-loop PRIVATE cxx_std_17)

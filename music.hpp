@@ -3,12 +3,17 @@
 #include "pcm_source.hpp"
 #include "sample_buffer.hpp"
 
-#include <memory>
 #include <filesystem>
+#include <memory>
+#include <string>
+#include <vector>
 
 class Music {
 public:
   static Music Open(const std::filesystem::path &path);
+  static std::vector<std::string> SupportedFormats() {
+    return {".wav", ".wv", ".ogg", ".flac"};
+  }
 
   Music(){};
   Music(std::unique_ptr<PCMSource> &&s);
@@ -21,8 +26,6 @@ public:
 
   uint64_t Duration() { return source->FrameCount(); }
 
-
 private:
   std::unique_ptr<PCMSource> source;
 };
-
