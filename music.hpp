@@ -12,7 +12,7 @@ class Music {
 public:
   static Music Open(const std::filesystem::path &path);
   static std::vector<std::string> SupportedFormats() {
-    return {".wav", ".wv", ".ogg", ".flac"};
+    return {".wav", ".wv", ".ogg", ".flac", ".mp3"};
   }
 
   Music(){};

@@ -11,7 +11,7 @@ std::unique_ptr<PCMSource> FlacSource::OpenFLAC(std::string &path) {
     delete output;
     throw std::invalid_argument("cannot read the file.");
   }
- 
+
   auto pFlac = output->pFlac;
 
   if (!ValidateAudioSpec(pFlac->channels, pFlac->sampleRate)) {
@@ -24,15 +24,16 @@ std::unique_ptr<PCMSource> FlacSource::OpenFLAC(std::string &path) {
 }
 
 void FlacSource::FillBuffer(const uint64_t &position, const uint64_t &count,
-                               SampleBuffer &buffer, const uint64_t &dest) {
+                            SampleBuffer &buffer, const uint64_t &dest) {
 
   drflac_seek_to_pcm_frame(pFlac, position);
 
-  std::vector<int32_t> wvBuffer;
-  wvBuffer.resize(count * Channels);
-
-  drflac_read_pcm_frames_s16(
-      pFlac, count, reinterpret_cast<drflac_int16 *>(buffer.FrameData()));
+  uint64_t frameRead = 0;
+  while (frameRead < count) {
+    frameRead += drflac_read_pcm_frames_s16(
+        pFlac, count - frameRead,
+        reinterpret_cast<drflac_int16 *>(buffer.FrameData(frameRead)));
+  }
 }
 
 uint64_t FlacSource::FrameCount() const { return pFlac->totalPCMFrameCount; }

@@ -25,7 +25,7 @@ add_executable(sdl-music-loop
 	"mixer_scene.hpp" "mixer_scene.cpp" 
 	"menu_scene.hpp" "menu_scene.cpp" 
 	"audio_device_scene.cpp" "audio_device_scene.hpp" 
-	"flac_source.hpp" "flac_source.cpp")
+	"flac_source.hpp" "flac_source.cpp" "mp3_source.hpp" "mp3_source.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
