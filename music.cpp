@@ -40,15 +40,15 @@ Music Music::Open(const std::filesystem::path &path) {
   std::unique_ptr<PCMSource> source;
   auto ext = path.extension().string();
   if (ext == ".wav") {
-    source = BufferedSource::OpenWAV(path.string());
+    source = BufferedSource::OpenWAV(path);
   } else if (ext == ".wv") {
-    source = WavpackSource::OpenWV(path.string());
+    source = WavpackSource::OpenWV(path);
   } else if (ext == ".ogg") {
-    source = VorbisSource::OpenOGG(path.string());
+    source = VorbisSource::OpenOGG(path);
   } else if (ext == ".flac") {
-    source = FlacSource::OpenFLAC(path.string());
+    source = FlacSource::OpenFLAC(path);
   } else if (ext == ".mp3") {
-    source = Mp3Source::OpenMP3(path.string());
+    source = Mp3Source::OpenMP3(path);
   }
 
   return Music(std::move(source));

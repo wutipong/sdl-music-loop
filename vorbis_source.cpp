@@ -1,9 +1,12 @@
 #include "vorbis_source.hpp"
 #include <stdexcept>
 
-std::unique_ptr<PCMSource> VorbisSource::OpenOGG(const std::string &path) {
-  OggVorbis_File vf;
-  if (ov_fopen(path.c_str(), &vf) != 0) {
+std::unique_ptr<PCMSource>
+VorbisSource::OpenOGG(const std::filesystem::path &path) {
+  auto output = std::make_unique<VorbisSource>();
+
+  OggVorbis_File &vf = output->file;
+  if (ov_fopen(path.u8string().c_str(), &vf) != 0) {
     throw std::invalid_argument("cannot read the file.");
   }
   vorbis_info *info = ov_info(&vf, -1);
@@ -11,11 +14,9 @@ std::unique_ptr<PCMSource> VorbisSource::OpenOGG(const std::string &path) {
     throw std::invalid_argument("unsupported audio file.");
   }
 
-  auto output = new VorbisSource;
-  output->size = ov_pcm_total(&vf, -1);
-  output->file = std::move(vf);
+  output->count = ov_pcm_total(&vf, -1);
 
-  return std::unique_ptr<PCMSource>(output);
+  return output;
 }
 void VorbisSource::FillBuffer(const uint64_t &position, const uint64_t &count,
                               SampleBuffer &buffer, const uint64_t &dest) {
@@ -31,6 +32,6 @@ void VorbisSource::FillBuffer(const uint64_t &position, const uint64_t &count,
   }
 }
 
-uint64_t VorbisSource::FrameCount() const { return size; }
+uint64_t VorbisSource::FrameCount() const { return count; }
 
 VorbisSource::~VorbisSource() { ov_clear(&file); }

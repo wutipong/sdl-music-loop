@@ -4,10 +4,12 @@
 #include <stdexcept>
 #include <vector>
 
-std::unique_ptr<PCMSource> Mp3Source::OpenMP3(std::string &path) {
-  std::unique_ptr<drmp3> mp3 = std::make_unique<drmp3>();
+std::unique_ptr<PCMSource>
+Mp3Source::OpenMP3(const std::filesystem::path &path) {
+  auto output = std::make_unique<Mp3Source>();
+  auto &mp3 = output->mp3;
 
-  if (!drmp3_init_file(mp3.get(), path.c_str(), NULL)) {
+  if (!drmp3_init_file(mp3.get(), path.u8string().c_str(), NULL)) {
     throw std::invalid_argument("cannot read the file.");
   }
 
@@ -16,11 +18,9 @@ std::unique_ptr<PCMSource> Mp3Source::OpenMP3(std::string &path) {
     throw std::invalid_argument("unsupported audio file.");
   }
 
-  auto *output = new Mp3Source;
   output->frameCount = drmp3_get_pcm_frame_count(mp3.get());
-  output->mp3 = std::move(mp3);
 
-  return std::unique_ptr<PCMSource>(output);
+  return output;
 }
 
 void Mp3Source::FillBuffer(const uint64_t &position, const uint64_t &count,
@@ -28,13 +28,12 @@ void Mp3Source::FillBuffer(const uint64_t &position, const uint64_t &count,
 
   drmp3_seek_to_pcm_frame(mp3.get(), position);
 
-   uint64_t frameRead = 0;
+  uint64_t frameRead = 0;
   while (frameRead < count) {
     frameRead += drmp3_read_pcm_frames_s16(
         mp3.get(), count - frameRead,
         reinterpret_cast<drmp3_int16 *>(buffer.FrameData(frameRead)));
   }
-  
 }
 
 uint64_t Mp3Source::FrameCount() const { return frameCount; }

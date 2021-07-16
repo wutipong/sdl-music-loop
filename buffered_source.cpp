@@ -1,13 +1,14 @@
 #include "buffered_source.hpp"
 #include <stdexcept>
 
-std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
-  auto output = new BufferedSource;
+std::unique_ptr<PCMSource>
+BufferedSource::OpenWAV(const std::filesystem::path &path) {
+  auto output = std::make_unique<BufferedSource>();
   Uint8 *buffer;
   SDL_AudioSpec spec;
   Uint32 length;
 
-  if (SDL_LoadWAV(path.c_str(), &spec, &buffer, &length) == nullptr) {
+  if (SDL_LoadWAV(path.u8string().c_str(), &spec, &buffer, &length) == nullptr) {
     throw std::invalid_argument("cannot read the file.");
   }
 
@@ -24,7 +25,7 @@ std::unique_ptr<PCMSource> BufferedSource::OpenWAV(const std::string &path) {
 
   SDL_FreeWAV(buffer);
 
-  return std::unique_ptr<PCMSource>(output);
+  return output;
 }
 
 void BufferedSource::FillBuffer(const uint64_t &position, const uint64_t &count,

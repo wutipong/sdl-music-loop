@@ -4,13 +4,13 @@
 #include <stdexcept>
 #include <vector>
 
-std::unique_ptr<PCMSource> WavpackSource::OpenWV(std::string &path) {
-  auto *output = new WavpackSource;
-  output->context = WavpackOpenFileInput(path.c_str(), nullptr, 0, 0);
+std::unique_ptr<PCMSource>
+WavpackSource::OpenWV(const std::filesystem::path &path) {
+  auto output = std::make_unique<WavpackSource>();
+  output->context = WavpackOpenFileInput(path.u8string().c_str(), nullptr, 0, 0);
 
-  auto ctx = output->context;
+  auto &ctx = output->context;
   if (!ctx) {
-    delete output;
     throw std::invalid_argument("cannot read the file.");
   }
 
@@ -22,7 +22,7 @@ std::unique_ptr<PCMSource> WavpackSource::OpenWV(std::string &path) {
     throw std::invalid_argument("unsupported audio file.");
   }
 
-  return std::unique_ptr<PCMSource>(output);
+  return output;
 }
 
 void WavpackSource::FillBuffer( const uint64_t &position, const uint64_t &count,
@@ -31,12 +31,12 @@ void WavpackSource::FillBuffer( const uint64_t &position, const uint64_t &count,
 
   std::vector<int32_t> wvBuffer;
   wvBuffer.resize(count * Channels);
-  WavpackUnpackSamples(context, wvBuffer.data(), count);
+  WavpackUnpackSamples(context, wvBuffer.data(), static_cast<uint32_t>(count));
 
   // trim off the 16bit padding of each sample created by Wavpack.
   int16_t *ptr = buffer.SampleData(dest);
   for (int i = 0; i < wvBuffer.size(); i++) {
-    ptr[i] = wvBuffer[i];
+    ptr[i] = static_cast<Sample>(wvBuffer[i]);
   }
 }
 

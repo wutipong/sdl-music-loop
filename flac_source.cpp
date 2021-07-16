@@ -4,11 +4,11 @@
 #include <stdexcept>
 #include <vector>
 
-std::unique_ptr<PCMSource> FlacSource::OpenFLAC(std::string &path) {
-  auto *output = new FlacSource;
-  output->pFlac = drflac_open_file(path.c_str());
+std::unique_ptr<PCMSource>
+FlacSource::OpenFLAC(const std::filesystem::path &path) {
+  auto output = std::make_unique<FlacSource>();
+  output->pFlac = drflac_open_file(path.u8string().c_str());
   if (output->pFlac == NULL) {
-    delete output;
     throw std::invalid_argument("cannot read the file.");
   }
 
@@ -16,11 +16,10 @@ std::unique_ptr<PCMSource> FlacSource::OpenFLAC(std::string &path) {
 
   if (!ValidateAudioSpec(pFlac->channels, pFlac->sampleRate)) {
     drflac_close(pFlac);
-    delete output;
     throw std::invalid_argument("unsupported audio file.");
   }
 
-  return std::unique_ptr<PCMSource>(output);
+  return output;
 }
 
 void FlacSource::FillBuffer(const uint64_t &position, const uint64_t &count,
