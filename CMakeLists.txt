@@ -24,12 +24,9 @@ add_executable(sdl-music-loop
 	"vorbis_source.hpp" "vorbis_source.cpp" 
 	"mixer_scene.hpp" "mixer_scene.cpp" 
 	"menu_scene.hpp" "menu_scene.cpp" 
-	"audio_device_scene.cpp" "audio_device_scene.hpp")
-	"ogg_source.hpp" "ogg_source.cpp" 
-	"mixer_scene.hpp" "mixer_scene.cpp" 
-	"menu_scene.hpp" "menu_scene.cpp" 
-	"audio_device_scene.cpp" "audio_device_scene.hpp" 
-	"flac_source.hpp" "flac_source.cpp" "mp3_source.hpp" "mp3_source.cpp")
+	"audio_device_scene.cpp" "audio_device_scene.hpp"
+	"flac_source.hpp" "flac_source.cpp" 
+	"mp3_source.hpp" "mp3_source.cpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
