@@ -31,13 +31,8 @@ void WavpackSource::FillBuffer( const uint64_t &position, const uint64_t &count,
   
   std::vector<int32_t> wvBuffer;
   wvBuffer.resize(count * Channels);
-  WavpackUnpackSamples(context, wvBuffer.data(), static_cast<uint32_t>(count));
-
-  // trim off the 16bit padding of each sample created by Wavpack.
-  auto *ptr = buffer.SampleData(dest);
-  for (int i = 0; i < wvBuffer.size(); i++) {
-    ptr[i] = static_cast<Sample>(wvBuffer[i]);
-  }
+  WavpackUnpackSamples(context, reinterpret_cast<int32_t*>(buffer.SampleData(dest)),
+                       static_cast<uint32_t>(count));
 }
 
 uint64_t WavpackSource::FrameCount() const {
