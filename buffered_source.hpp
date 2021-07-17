@@ -11,13 +11,14 @@ class BufferedSource : public PCMSource {
 public:
   static std::unique_ptr<PCMSource> OpenWAV(const std::filesystem::path &path);
 
+  BufferedSource(const uint64_t &count);
+
   virtual void FillBuffer( const uint64_t &position, const uint64_t &count,
                           SampleBuffer &buffer, const uint64_t &dest) override;
 
-  virtual uint64_t FrameCount() const override { return frames.size(); }
+  virtual uint64_t FrameCount() const override { return count; }
 
 private:
-  std::vector<Frame> frames;
-  std::vector<Frame>::iterator iter;
-  bool valid{false};
+  std::unique_ptr<Frame[]> data;
+  uint64_t count{0};
 };
