@@ -52,6 +52,13 @@ void AudioDeviceScene::DoUI() {
       Play();
     }
   }
+
+  if (ImGui::Button("Rewind")) {
+    music.current = 0;
+  }
+
+  ImGui::ProgressBar((float)music.current / (music.loopEnd - music.loopStart));
+
   fileBrowser.Display();
   if (fileBrowser.HasSelected()) {
 
