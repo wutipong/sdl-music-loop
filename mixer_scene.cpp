@@ -69,7 +69,7 @@ void MixerScene::DoUI() {
     music.current = 0;
   }
 
-  ImGui::ProgressBar((float)music.current / (music.loopEnd - music.loopStart));
+  ImGui::ProgressBar((float)music.current / music.loopEnd);
 
   fileBrowser.Display();
   if (fileBrowser.HasSelected()) {
