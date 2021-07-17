@@ -28,11 +28,12 @@ void Mp3Source::FillBuffer(const uint64_t &position, const uint64_t &count,
 
   drmp3_seek_to_pcm_frame(mp3.get(), position);
 
-  uint64_t frameRead = 0;
-  while (frameRead < count) {
+  /* `drmp3_read_pcm_frames_f32` might read less than the supplied parameter
+   * from the stream. Use a loop to keep reading uptil the buffer is filled. */
+  for (uint64_t frameRead = 0; frameRead < count;) {
     frameRead += drmp3_read_pcm_frames_f32(
         mp3.get(), count - frameRead,
-        reinterpret_cast<float*>(buffer.FrameData(frameRead)));
+        reinterpret_cast<float *>(buffer.FrameData(frameRead)));
   }
 }
 

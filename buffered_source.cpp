@@ -8,7 +8,8 @@ BufferedSource::OpenWAV(const std::filesystem::path &path) {
   SDL_AudioSpec spec;
   Uint32 length;
 
-  if (SDL_LoadWAV(path.u8string().c_str(), &spec, &buffer, &length) == nullptr) {
+  if (SDL_LoadWAV(path.u8string().c_str(), &spec, &buffer, &length) ==
+      nullptr) {
     throw std::invalid_argument("cannot read the file.");
   }
 
@@ -21,6 +22,7 @@ BufferedSource::OpenWAV(const std::filesystem::path &path) {
   auto src = reinterpret_cast<Frame *>(buffer);
   auto frameCount = length / sizeof(Frame);
 
+  /* Copy PCM data from the read buffer into the output.*/
   output->frames = std::vector<Frame>(src, src + frameCount);
 
   SDL_FreeWAV(buffer);
@@ -33,5 +35,7 @@ void BufferedSource::FillBuffer(const uint64_t &position, const uint64_t &count,
   if (frames.empty())
     return;
 
+  // Since we buffer the whole PCM data, we can just copy the required samples
+  // into the buffer.
   std::copy_n(frames.begin() + position, count, buffer.FrameData(dest));
 }
