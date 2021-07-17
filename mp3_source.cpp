@@ -33,7 +33,7 @@ void Mp3Source::FillBuffer(const uint64_t &position, const uint64_t &count,
   for (uint64_t frameRead = 0; frameRead < count;) {
     frameRead += drmp3_read_pcm_frames_f32(
         mp3.get(), count - frameRead,
-        reinterpret_cast<float *>(buffer.FrameData(frameRead)));
+        buffer.SampleData(frameRead));
   }
 }
 

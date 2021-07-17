@@ -6,12 +6,11 @@
 
 class SampleBuffer {
 public:
-  SampleBuffer(const uint64_t &sampleCount);
+  SampleBuffer(const uint64_t &count);
 
   Sample *SampleData(const uint64_t &framePosition = 0);
   Frame *FrameData(const uint64_t &framePosition = 0);
 
-  uint64_t SampleCount() const;
   uint64_t FrameCount() const;
   uint64_t ByteSize() const;
 

@@ -11,10 +11,6 @@ Frame *SampleBuffer::FrameData(const uint64_t &framePosition) {
   return data.get() + framePosition;
 }
 
-uint64_t SampleBuffer::SampleCount() const {
-  return (count / sizeof(Sample)) * sizeof(Frame);
-}
-
 uint64_t SampleBuffer::FrameCount() const { return count; }
 
 uint64_t SampleBuffer::ByteSize() const { return count * sizeof(Frame); }
