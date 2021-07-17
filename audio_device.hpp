@@ -4,11 +4,12 @@
 
 class Music;
 
-typedef int32_t Frame;
-typedef int16_t Sample;
+typedef float Sample;
+typedef uint64_t Frame;
+
 constexpr int SamplingRate = 44'100;
 constexpr int Channels = 2;
-constexpr SDL_AudioFormat Format = AUDIO_S16;
+constexpr SDL_AudioFormat Format = AUDIO_F32;
 constexpr int BufferFrameCount = 1024;
 
 void OpenAudioDevice();

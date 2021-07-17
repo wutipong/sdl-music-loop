@@ -29,9 +29,9 @@ void FlacSource::FillBuffer(const uint64_t &position, const uint64_t &count,
 
   uint64_t frameRead = 0;
   while (frameRead < count) {
-    frameRead += drflac_read_pcm_frames_s16(
+    frameRead += drflac_read_pcm_frames_f32(
         pFlac, count - frameRead,
-        reinterpret_cast<drflac_int16 *>(buffer.FrameData(frameRead)));
+        reinterpret_cast<float *>(buffer.FrameData(frameRead)));
   }
 }
 

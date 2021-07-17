@@ -28,13 +28,13 @@ WavpackSource::OpenWV(const std::filesystem::path &path) {
 void WavpackSource::FillBuffer( const uint64_t &position, const uint64_t &count,
                                SampleBuffer &buffer, const uint64_t &dest) {
   WavpackSeekSample64(context, position);
-
+  
   std::vector<int32_t> wvBuffer;
   wvBuffer.resize(count * Channels);
   WavpackUnpackSamples(context, wvBuffer.data(), static_cast<uint32_t>(count));
 
   // trim off the 16bit padding of each sample created by Wavpack.
-  int16_t *ptr = buffer.SampleData(dest);
+  auto *ptr = buffer.SampleData(dest);
   for (int i = 0; i < wvBuffer.size(); i++) {
     ptr[i] = static_cast<Sample>(wvBuffer[i]);
   }
