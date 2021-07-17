@@ -23,12 +23,20 @@ void VorbisSource::FillBuffer(const uint64_t &position, const uint64_t &count,
   ov_pcm_seek(&file, position);
   int bitstream = 0;
 
-  char *stream = reinterpret_cast<char *>(buffer.SampleData(dest));
-  uint64_t sizeInBytes = count * sizeof(Frame);
+  for (long readTotal = 0; readTotal < count;) {
+    float **pcm{};
 
-  for (long readTotal = 0; readTotal < sizeInBytes;) {
-    readTotal += ov_read(&file, stream + readTotal, sizeInBytes - readTotal, 0,
-                         2, 1, &bitstream);
+    auto samples_read = ov_read_float(&file, &pcm, count - readTotal, &bitstream);
+
+    for (int i = 0; i < samples_read; i++) {
+      float *left = buffer.SampleData(dest + readTotal + i);
+      float *right = left+1;
+
+      *left = pcm[0][i];
+      *right = pcm[1][i];
+    }
+
+    readTotal += samples_read;
   }
 }
 

@@ -13,13 +13,13 @@ Music::Music(std::unique_ptr<PCMSource> &&s) : source(std::move(s)) {
 
 void Music::FillBuffer(SampleBuffer &buffer) {
   if (source == nullptr || current >= source->FrameCount()) {
-    std::fill_n(buffer.FrameData(), buffer.FrameDataSize(), 0);
+    std::fill_n(buffer.FrameData(), buffer.FrameCount(), 0);
     return;
   }
 
-  for (size_t bufferIndex = 0; bufferIndex < buffer.FrameDataSize();) {
+  for (size_t bufferIndex = 0; bufferIndex < buffer.FrameCount();) {
     auto sourceAvailable = loopEnd - current;
-    auto bufferRemain = buffer.FrameDataSize() - bufferIndex;
+    auto bufferRemain = buffer.FrameCount() - bufferIndex;
 
     if (sourceAvailable > bufferRemain) {
       source->FillBuffer(current, bufferRemain, buffer, bufferIndex);

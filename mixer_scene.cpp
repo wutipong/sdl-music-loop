@@ -104,7 +104,7 @@ void MixerScene::FillBuffer(SampleBuffer &buffer) {
   if (isPlaying) {
     music.FillBuffer(buffer);
   } else {
-    std::fill_n(buffer.FrameData(), buffer.FrameDataSize(), 0);
+    std::fill_n(buffer.FrameData(), buffer.FrameCount(), 0);
   }
 }
 
