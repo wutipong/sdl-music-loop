@@ -13,8 +13,12 @@ public:
 
   virtual uint64_t FrameCount() const;
 
+  WavpackSource(WavpackContext *context) : context(context){};
   ~WavpackSource();
 
 private:
   WavpackContext *context;
+
+  WavpackSource(const WavpackSource &other) {}
+  WavpackSource &operator=(const WavpackSource &other) {}
 };

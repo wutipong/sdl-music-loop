@@ -33,7 +33,7 @@ void VorbisSource::FillBuffer(const uint64_t &position, const uint64_t &count,
      * channel. SDL playbacks require interleave data, so we need to build one.
      */
     auto samples_read =
-        ov_read_float(&file, &pcm, count - readTotal, &bitstream);
+        ov_read_float(&file, &pcm, static_cast<int>(count - readTotal), &bitstream);
 
     for (int i = 0; i < samples_read; i++) {
       float *left = buffer.SampleData(dest + readTotal + i);

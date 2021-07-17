@@ -3,8 +3,8 @@
 #include "audio_device.hpp"
 #include "pcm_source.hpp"
 #include "sample_buffer.hpp"
-#include <memory>
 #include <filesystem>
+#include <memory>
 #include <vorbis/vorbisfile.h>
 
 class VorbisSource : public PCMSource {
@@ -15,9 +15,13 @@ public:
 
   virtual uint64_t FrameCount() const override;
 
+  VorbisSource(){};
   virtual ~VorbisSource();
 
 private:
-  OggVorbis_File file;
+  VorbisSource(const VorbisSource &other) {}
+  VorbisSource &operator=(const VorbisSource &other) {}
+
+  OggVorbis_File file{};
   uint64_t count;
 };
